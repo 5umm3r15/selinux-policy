@@ -502,6 +502,10 @@ optional_policy(`
     tangd_read_db_files(init_t)
 ')
 
+optional_policy(`
+    usbguard_mounton_log(init_t)
+')
+
 tunable_policy(`use_virtualbox',`
     logging_create_generic_logs(init_t)
 ')
