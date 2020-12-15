@@ -314,6 +314,26 @@ interface(`systemd_resolved_read_pid',`
 	files_search_pids($1)
 	list_dirs_pattern($1, systemd_resolved_var_run_t, systemd_resolved_var_run_t)
 	read_files_pattern($1, systemd_resolved_var_run_t, systemd_resolved_var_run_t)
+	read_lnk_files_pattern($1, systemd_resolved_var_run_t, systemd_resolved_var_run_t)
+')
+
+######################################
+## <summary>
+##	Write to systemd_resolved PID socket files.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`systemd_resolved_write_pid_sock_files',`
+	gen_require(`
+		type systemd_resolved_var_run_t;
+	')
+
+	files_search_pids($1)
+	write_sock_files_pattern($1, systemd_resolved_var_run_t, systemd_resolved_var_run_t)
 ')
 
 ######################################
@@ -2310,6 +2330,22 @@ interface(`systemd_chat_resolved',`
 	allow $1 systemd_resolved_t:unix_stream_socket connectto;
 	allow systemd_resolved_t $1:dbus send_msg;
 	ps_process_pattern(systemd_resolved_t, $1)
+')
+
+########################################
+## <summary>
+##	Exchange messages with
+##	systemd resolved over dbus (deprecated)
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`systemd_dbus_chat_resolved',`
+	refpolicywarn(`$0($*) has been deprecated, use systemd_chat_resolved() instead.')
+	systemd_chat_resolved($1)
 ')
 
 ######################################

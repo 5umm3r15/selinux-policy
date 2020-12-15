@@ -300,6 +300,7 @@ init_signal_script(systemd_logind_t)
 init_getattr_script_status_files(systemd_logind_t)
 init_read_utmp(systemd_logind_t)
 init_config_transient_files(systemd_logind_t)
+init_manage_pid_files(systemd_logind_t)
 
 getty_systemctl(systemd_logind_t)
 
@@ -1055,6 +1056,7 @@ allow systemd_resolved_t self:unix_dgram_socket create_socket_perms;
 
 manage_dirs_pattern(systemd_resolved_t, systemd_resolved_var_run_t, systemd_resolved_var_run_t)
 manage_files_pattern(systemd_resolved_t, systemd_resolved_var_run_t, systemd_resolved_var_run_t)
+manage_lnk_files_pattern(systemd_resolved_t, systemd_resolved_var_run_t, systemd_resolved_var_run_t)
 manage_sock_files_pattern(systemd_resolved_t, systemd_resolved_var_run_t, systemd_resolved_var_run_t)
 init_pid_filetrans(systemd_resolved_t, systemd_resolved_var_run_t, dir)
 
@@ -1282,10 +1284,12 @@ systemd_read_efivarfs(systemd_userdbd_t)
 #
 
 allow systemd_sleep_t self:capability sys_resource;
+dontaudit systemd_sleep_t self:capability sys_ptrace;
 
 kernel_dgram_send(systemd_sleep_t)
 
 dev_rw_sysfs(systemd_sleep_t)
+dev_write_sysfs_dirs(systemd_sleep_t)
 dev_write_kmsg(systemd_sleep_t)
 
 fstools_rw_swap_files(systemd_sleep_t)
