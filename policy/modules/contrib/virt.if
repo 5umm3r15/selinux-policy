@@ -175,23 +175,6 @@ interface(`virt_exec',`
 	can_exec($1, virtd_exec_t)
 ')
 
-########################################
-## <summary>
-##  Transition to virt_bridgehelper.
-## </summary>
-## <param name="domain">
-## <summary>
-##  Domain allowed to transition.
-## </summary>
-## </param>
-interface(`virt_domtrans_bridgehelper',`
-	gen_require(`
-		type virt_bridgehelper_t, virt_bridgehelper_exec_t;
-	')
-
-	domtrans_pattern($1, virt_bridgehelper_exec_t, virt_bridgehelper_t)
-')
-
 #######################################
 ## <summary>
 ##	Connect to virt over a unix domain stream socket.
