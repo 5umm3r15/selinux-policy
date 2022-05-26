@@ -1,0 +1,53 @@
+policy_module(targetclid, 1.0.0)
+
+########################################
+#
+# Declarations
+#
+
+type targetclid_t;
+type targetclid_exec_t;
+init_daemon_domain(targetclid_t, targetclid_exec_t)
+
+permissive targetclid_t;
+
+type targetclid_home_t;
+userdom_user_home_content(targetclid_home_t)
+
+type targetclid_var_run_t;
+files_pid_file(targetclid_var_run_t)
+
+########################################
+#
+# targetclid local policy
+#
+allow targetclid_t self:fifo_file rw_fifo_file_perms;
+allow targetclid_t self:unix_stream_socket create_stream_socket_perms;
+
+manage_dirs_pattern(targetclid_t, targetclid_home_t, targetclid_home_t)
+manage_files_pattern(targetclid_t, targetclid_home_t, targetclid_home_t)
+
+manage_dirs_pattern(targetclid_t, targetclid_var_run_t, targetclid_var_run_t)
+manage_files_pattern(targetclid_t, targetclid_var_run_t, targetclid_var_run_t)
+manage_lnk_files_pattern(targetclid_t, targetclid_var_run_t, targetclid_var_run_t)
+manage_sock_files_pattern(targetclid_t, targetclid_var_run_t, targetclid_var_run_t)
+files_pid_filetrans(targetclid_t, targetclid_var_run_t, { dir file lnk_file sock_file })
+
+corecmd_exec_bin(targetclid_t)
+
+files_read_etc_files(targetclid_t)
+
+fs_read_configfs_dirs(targetclid_t)
+fs_read_configfs_files(targetclid_t)
+
+auth_read_passwd(targetclid_t)
+
+libs_exec_ldconfig(targetclid_t)
+
+miscfiles_read_localization(targetclid_t)
+
+domain_use_interactive_fds(targetclid_t)
+
+optional_policy(`
+        dbus_system_bus_client(targetclid_t)
+')
