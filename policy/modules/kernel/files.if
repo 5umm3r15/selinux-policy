@@ -2435,6 +2435,24 @@ interface(`files_dontaudit_write_all_mountpoints',`
 
 ########################################
 ## <summary>
+##      Watch_sb all mount points
+## </summary>
+## <param name="domain">
+##      <summary>
+##      Domain allowed access.
+##      </summary>
+## </param>
+#
+interface(`files_watch_sb_all_mountpoints', `
+        gen_require(`
+		attribute mountpoint;
+        ')
+
+        watch_sb_dirs_pattern($1, mountpoint, mountpoint)
+')
+
+########################################
+## <summary>
 ##	Do not audit attempts to unmount all mount points.
 ## </summary>
 ## <param name="domain">
@@ -2558,6 +2576,24 @@ interface(`files_write_root_dirs',`
 	')
 
 	allow $1 root_t:dir write;
+')
+
+########################################
+## <summary>
+##      Watch_sb root directories.
+## </summary>
+## <param name="domain">
+##      <summary>
+##      Domain allowed access.
+##      </summary>
+## </param>
+#
+interface(`files_watch_sb_root_dirs', `
+	gen_require(`
+		type root_t;
+	')
+
+        watch_sb_dirs_pattern($1, root_t, root_t)
 ')
 
 ########################################
@@ -3087,6 +3123,24 @@ interface(`files_watch_boot_dirs',`
 	')
 
 	allow $1 boot_t:dir watch_dir_perms;
+')
+
+########################################
+## <summary>
+##      Watch_sb boot directories.
+## </summary>
+## <param name="domain">
+##      <summary>
+##      Domain allowed access.
+##      </summary>
+## </param>
+#
+interface(`files_watch_sb_boot_dirs', `
+	gen_require(`
+		type boot_t;
+	')
+
+        watch_sb_dirs_pattern($1, boot_t, boot_t)
 ')
 
 ########################################
